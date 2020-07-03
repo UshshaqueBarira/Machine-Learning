@@ -1,2 +1,4 @@
 # Supervised_learning_model_accuracy_comparison_iris
-The entire code was written in order to grasp the brief knowledge about the accuracy levels of supervised learning algorithms by tweaking the percentage of train data and testing data.
+The algorithms being used in this code are LinearAnalysis algorithm, Support Vector Machine algorithm and KNeighbour algorithm.
+These algorithms are helpful only when the x and y values are known.
+Thus, these algorithms take in the mean and squared mean for error reduction.
