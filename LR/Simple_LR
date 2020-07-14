@@ -1,0 +1,41 @@
+import numpy as np
+import pandas as pd
+from sklearn.linear_model import LinearRegression
+#we have two variables where we have x is the independent variable while y is a dependent variable, thus we are going to use regression analysis trying to find what is the output.
+import matplotlib.pyplot as plt
+plt.rcParams['figure.figsize']=(12.0,9.0)
+
+url="D:/DataSets/linear regression/Linear Regression - Sheet1.csv"
+data_file=pd.read_csv(url)
+print(data_file.head())
+print(data_file.describe())
+print(data_file.shape)
+#reshaping since we have single column, whereas it requires multiple values
+X=np.array(data_file['X'].values).reshape(-1,1)
+Y=data_file['Y'].values
+
+#creating a model
+model=LinearRegression()
+model_fit=model.fit(X,Y)
+r_sq=model_fit.score(X,Y)
+print("Coefficient of determination:",r_sq)
+intercept=model.intercept_
+print("Intercept:",intercept)
+#intercept is scalar(b0)--it indicate when x is 0, b0 is ___
+slope=model.coef_
+print("Slope:",slope)
+#slope is arrayed(b1)---it indicates when x is 0, b1 increases by ___
+
+#prediction
+y_predict=model.predict(X)
+print("X",X,"Predicted response:",y_predict,sep='\n')
+
+
+X1=[10,20,30,40,50]
+y1_predict=model.predict(np.array(X1).reshape(-1,1))
+print('\n',"predicted values:y:",y1_predict,sep='\n')
+
+
+#plotting via least squares
+plt.scatter(X,y_predict)
+plt.show()
