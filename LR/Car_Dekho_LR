@@ -1,0 +1,69 @@
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from datetime import date
+from sklearn.linear_model import LinearRegression
+from sklearn.model_selection import train_test_split
+
+data_file=pd.read_csv("D:/DataSets/car dekho/car data.csv")
+print("STEP1:\n",data_file.head())
+cols=[]
+
+for col in data_file.columns:
+    cols.append(col)
+print("\nSTEP 2:\n",cols)
+print("\nSTEP 3:\n",(data_file.groupby('Fuel_Type').size()))
+print("\nSTEP 4:\n",data_file.shape)
+print("\nSTEP 5:\n Data Statistics \n",data_file.describe())
+
+print("\n STEP 6:\n DATA TYPES\n","Car Name",type(data_file['Car_Name']))
+print("\n Year",type(data_file['Year']))
+print('\nSelling_Price',type(data_file['Selling_Price']))
+print('\nPresent_Price',type(data_file['Present_Price']))
+print('\nKms_Driven',type(data_file['Kms_Driven']))
+print('\nFuel_Type',type(data_file['Fuel_Type']))
+print('\nSeller_Type',type(data_file['Seller_Type']))
+print('\nTransmission',type(data_file['Transmission']))
+print('\nOwner',type(data_file['Owner']))
+
+
+print("\nSTEP 7:\n Unique Owners:",data_file['Owner'].unique())
+print("\nSTEP 8:\n Unique Transmission:",data_file['Transmission'].unique())
+print("\nSTEP 9:\n Unique Seller:",data_file['Seller_Type'].unique())
+print("\nSTEP 10:\n Unique Fuel Type:",data_file['Fuel_Type'].unique())
+#Plotting
+#1.Plotting car sales year wise
+car_purchase_year=pd.array(data_file['Year'])
+car_count=(data_file['Car_Name'].value_counts())
+print("\nSTEP 11:\n",max(data_file['Car_Name']),max(car_count))
+
+#Dropping columns not needed
+data_file['Years Difference']=data_file['Year']-date.today().year
+#data_file.drop(['Car_Name','Year'],axis=1,inplace=True)
+print(data_file.columns)
+
+#Correlaton
+coef=pd.DataFrame(data_file.corr())
+print("The correlation is:",coef)
+
+#To find the linear regression using least squares
+X=(data_file['Selling_Price'].values).reshape(-1,1)
+Y=data_file['Present_Price'].values
+model=LinearRegression()
+model_fit=model.fit(X,Y)
+r_sq= model_fit.score(X,Y)
+print("Coefficient of determination is:",r_sq)
+intercept=model.intercept_
+print("Intercept is:",intercept)
+slope=model.coef_
+print("Slope is:",slope)
+X1=[8.9,98.7,67.5,43.5,12.0,7.9]
+y_predict=model.predict(np.array(X1).reshape(-1,1))
+print("Predicted Selling Price:Rs.",y_predict)
+
+
+plt.scatter(X1,y_predict)
+plt.show()
+
+#Thus, we found that Selling price is linearly related to purchase price.
+
