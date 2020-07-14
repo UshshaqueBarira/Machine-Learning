@@ -1,0 +1,70 @@
+#Importing the packages
+import sys
+import pandas as pd
+import numpy as np
+import scipy as sp
+import sklearn as sk
+import matplotlib as mp
+
+#importing the libraries
+from pandas.plotting import scatter_matrix
+import matplotlib.pyplot as pt
+from sklearn import model_selection
+from sklearn.metrics import classification_report
+from sklearn.metrics import confusion_matrix
+from sklearn.metrics import accuracy_score
+from sklearn.linear_model import LogisticRegression
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.svm import SVC
+
+#import data set
+url="D:/DataSets/mall_customers/Mall_Customers.csv"
+col_heads=["CustomerID","Age","Annual Income (k$)","Spending Score (1-100)","Genre"]
+dataset=pd.read_csv(url,names=col_heads)
+print(dataset.shape)
+print(dataset.describe())
+print(dataset.groupby('Genre').size())
+print(dataset.groupby('Age').size())
+
+#visualisation 1
+scatter_matrix(dataset)
+pt.show()
+
+#splitting the data
+array=dataset.values
+x=array[:,1:4]
+y=array[:,4]
+validation_size=0.20
+seed=10
+x_train,x_validation,y_train,y_validation=model_selection.train_test_split(x,y,test_size=validation_size,random_state=seed)
+
+#Evaluation
+scoring='accuracy'
+models=[]
+models.append(("LR",LogisticRegression()))
+models.append(("KNN",KNeighborsClassifier()))
+models.append(("SVM",SVC()))
+print(models)
+
+#Evaluation model
+results=[]
+names=[]
+
+for name, model in models:
+    kfold=model_selection.KFold(n_splits=10,random_state=seed)
+    cv_result=model_selection.cross_val_score(model,x_train,y_train,cv=kfold,scoring=scoring)
+    names.append(name)
+    msg="%s: %f (%f)" %(name,cv_result.mean(),cv_result.std())
+    print(msg)
+
+#make prediction on model:
+for name, model in models:
+    model.fit(x_train,y_train)
+    print(name)
+    print(accuracy_score(y_validation,model.predict(x_validation)))
+    print(classification_report(y_validation,model.predict(x_validation)))
+
+
+#the analysis goes that SVM is performing the best with an accuracy level of 61% in comparison to KNN with 55% and lR as 60% (seed=10,train=30)
+#the analysis goes that with seed as 10, and training data as 20%, the algo that performs well is SVM with 55 whereas KNN is 55 and LR is 52.5
+#the analysis goes that SVM is performing the best with an accuracy level of 55% in comparison to KNN with 50 and lR as 62.5 (seed=7,train=20)
