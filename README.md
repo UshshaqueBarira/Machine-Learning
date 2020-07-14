@@ -16,5 +16,8 @@ The algorithms being tested in these projects are:
 
 The regression analysis is also performed using python on a simple data where we have a linear line of points for X and Y values.
 The model linearly fits the values.
+The linear regression is performed on the dataset from cardekho.com.
+There is a linear correlation between the selling price and the present price.
+
 
 Working on these algorithms are a basic start to my modelling aspiration.
