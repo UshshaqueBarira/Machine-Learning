@@ -1,0 +1,27 @@
+import tweepy
+from textblob import TextBlob
+import pandas as pd
+import numpy as np
+consumer_key='nXaMgg6uFhiyYuumIL6uu7ZJI'
+consumer_secret='MtRhWPPQjI3oTp2g0jqHB7co4y1ym7u5C8BgzciwcEND831Qu1'
+access_token='1257680135462858752-hRQ78dUhn6zudlnV2rR3mxPgiXZ9n1'
+access_token_secret='w2uepdid8Sz4yKm4xEUxhIoYLirBiqKIti6Z7bVkyujR3'
+auth=tweepy.OAuthHandler(consumer_key,consumer_secret)
+auth.set_access_token(access_token,access_token_secret)
+api=tweepy.API(auth)
+
+search_array=['Ratan Tata','Mukesh Ambani','Sundar Pichai','APJ Abdul Kalam','Elon Musk','Jeff Weiner','Eve Mayer','Eric Schmidt','Steve Forbes','Peter Cashmore','Marry Barra','Daniel Ek','Jonah Paretti','Aaron Levie']
+count_array=[]
+
+for i in range(0,len(search_array)):
+  public_tweets=api.search(search_array[i])
+  text_array=[]
+  for tweet in public_tweets:
+    print('\n',search_array[i]," has tweeted:\n")
+    text_array.append(tweet)
+    print("Tweet:",tweet.text)
+    print((TextBlob(tweet.text).sentiment))
+
+  count_array.append(len(text_array))
+for i in range(0,len(count_array)):
+  print("\n","Tweets captured for ",search_array[i],"are:",count_array[i])
